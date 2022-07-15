@@ -1,70 +1,67 @@
-# Jekyll::Paginate V2
+# Example 03::Tag and Collection pagination
 
-> :warning: Please note that this plugin is **NOT** supported by GitHub pages. Here is a [list of all plugins supported](https://pages.github.com/versions/). However you can follow [this GitHub guide](https://help.github.com/articles/adding-jekyll-plugins-to-a-github-pages-site/) to enable it or by using [Travis CI](https://ayastreb.me/deploy-jekyll-to-github-pages-with-travis-ci/). GitLab supposedly supports [any plugin](https://about.gitlab.com/comparison/gitlab-pages-vs-github-pages.html). 
+This example bookshop website uses collections to organize its books^*. The site relies on pagination of its books by both collections and tags. The site shows how to paginate by single, multiple or all collections at the same time. 
 
-Pagination gem built specially for Jekyll 3, and newer, that is fully backwards compatible and serves as an enhanced replacement for the previously built-in [jekyll-paginate gem](https://github.com/jekyll/jekyll-paginate). View it on [rubygems.org](https://rubygems.org/gems/jekyll-paginate-v2).
+The site uses the pretty permalink structure. It also demonstrates advanced sorting features such as nested fields. 
 
-[![Code Shelter](https://www.codeshelter.co/static/badges/badge-flat.svg)](https://www.codeshelter.co/)
-[![Gem](https://img.shields.io/gem/v/jekyll-paginate-v2.svg)](https://rubygems.org/gems/jekyll-paginate-v2)
-[![Join the chat at https://gitter.im/jekyll-paginate-v2/Lobby](https://badges.gitter.im/jekyll-paginate-v2/Lobby.svg)](https://gitter.im/jekyll-paginate-v2/Lobby)
-[![Build Status](https://travis-ci.org/sverrirs/jekyll-paginate-v2.svg?branch=master)](https://travis-ci.org/sverrirs/jekyll-paginate-v2) 
-[![Code Climate](https://codeclimate.com/github/sverrirs/jekyll-paginate-v2/badges/gpa.svg)](https://codeclimate.com/github/sverrirs/jekyll-paginate-v2)
-[![security](https://hakiri.io/github/sverrirs/jekyll-paginate-v2/master.svg)](https://hakiri.io/github/sverrirs/jekyll-paginate-v2/master)
-[![Gem](https://img.shields.io/gem/dt/jekyll-paginate-v2.svg)](https://rubygems.org/gems/jekyll-paginate-v2)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/sverrirs/jekyll-paginate-v2/master/examples/img/03-example-screenshot-main.png" />
+</p>
 
-Reach me at the [project issues](https://github.com/sverrirs/jekyll-paginate-v2/issues) section or via email at [jekyll@sverrirs.com](mailto:jekyll@sverrirs.com), you can also get in touch on the project's [Gitter chat room](https://gitter.im/jekyll-paginate-v2/Lobby).
+The site is generated using the jekyll built in new command `jekyll new myblog` and it uses the [default `minima` theme](https://github.com/jekyll/minima).
 
-* [Installation](#installation)
-* [Example Sites](https://github.com/sverrirs/jekyll-paginate-v2/tree/master/examples)
-* [Pagination Generator](#pagination-generator)
-* [Auto-Pages](#auto-pages)
-* [Issues / to-be-completed](#issues--to-be-completed)
-* [How to Contribute](#contributing)
-
-> _"Be excellent to each other"_
-
-:heart:
-
-## Installation
-
+After generating the pagination gem was installed using
 ```
 gem install jekyll-paginate-v2
 ```
 
-Update your [_config.yml](README-GENERATOR.md#site-configuration) and [pages](README-GENERATOR.md#page-configuration).
+^* _It could be argued that the bookstore should have just used categories here and collections were better suited to separate things into 'books', 'DVDs', 'Games' etc..._
 
-> Although fully backwards compatible, to enable the new features this gem needs slightly extended [site yml](README-GENERATOR.md#site-configuration) configuration and miniscule additional new front-matter for the [pages to paginate on](README-GENERATOR.md#page-configuration).
+## Structure
 
-Now you're ready to run `jekyll serve` and your paginated files should be generated.
+The site has three types of document collections `_biography/`, `_fantasy/`, `_romance/`. In addition to that the bookstore also has a blog and those posts are stored under `blog/_posts`. 
 
-Please see the [Examples](https://github.com/sverrirs/jekyll-paginate-v2/tree/master/examples) for tips and tricks on how to configure the pagination logic.
+All books have multiple tags assigned to them.
+
+Permalinks are configured to the `pretty` format site-wide. The pagination logic handles this configuration without problems and constructs the correct sub url structure.
+
+Pagination pages are:
+
+* biography/biograpy.md
+* biography/biograpy-musicians.md
+* romance/romance-historical.md
+* tags/contemporary.md
+* tags/fantasy.md
+* tags/sci-fi.md
+* index.md
+* byisbn.md
+
+Most pages are self explanatory and most sort books by the nested attribute `rank`.
+
+### Page: byisbn.md 
+Demonstrates how to have multiple pagination pages defined in the root of the site without their pagination pages clashing. Uses permalinks to achieve this.
+
+### Page: Under tags/
+Demonstrate how to paginate across multiple collections by using the `collections: all` front matter configuration
+
+## Setup Configuration
+The gem is added to the `_config.yml` file under
+``` yml
+gems:
+  - jekyll-paginate-v2
+```
+
+as well as to the `Gemfile` into the main loop
+``` ruby
+group :jekyll_plugins do
+  gem "jekyll-paginate-v2"
+  gem "jekyll-feed"
+end
+```
+
+At this point is is advisable to delete the `Gemfile.lock` file to clear out any potential issues with gem caching and dependency issues (no worries this file will be auto generated for you again).
 
 
-## Pagination Generator
+Try building the site yourself using `jekyll build` or `jekyll serve`.
 
-The [Pagination Generator](README-GENERATOR.md) forms the core of the pagination logic. Calculates and generates the pagination pages.
-
-
-## Auto Pages
-
-The [Auto-Pages](README-AUTOPAGES.md) is an optional feature that auto-magically generates paginated pages for all your tags, categories and collections.
-
-
-## Contributing
-
-> Although this project is small it has a [code of conduct](CODE_OF_CONDUCT.md) that I hope everyone will do their best to follow when contributing to any aspects of this project. Be it discussions, issue reporting, documentation or programming. 
-
-If you don't want to open issues here on Github, send me your feedback by email at [jekyll@sverrirs.com](mailto:jekyll@sverrirs.com).
-
-1. Fork it ( https://github.com/sverrirs/jekyll-paginate-v2/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Run the unit tests (`rake`)
-4. Commit your changes (`git commit -am 'Add some feature'`)
-5. Build the gem locally (`gem build jekyll-paginate-v2.gemspec`)
-6. Test and verify the gem locally (`gem install ./jekyll-paginate-v2-x.x.x.gem`) 
-7. Push to the branch (`git push origin my-new-feature`)
-8. Create new Pull Request
-
-Note: This project uses [semantic versioning](http://semver.org/).
-
-> The code was based on the original design of [jekyll-paginate](https://github.com/jekyll/jekyll-paginate) and features were sourced from discussions such as [#27](https://github.com/jekyll/jekyll-paginate/issues/27) (thanks [Günter Kits](https://github.com/gynter)).
+Cheers :heart:
